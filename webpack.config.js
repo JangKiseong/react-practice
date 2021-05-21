@@ -18,6 +18,16 @@ module.exports = {
             }
         ]
     },
+
+    // 개발 서버 설정하기
+    devServer: {
+        historyApiFallback: true,
+        inline: true,
+        port: 3000,
+        hot: true,
+        publicPath: '/',
+    },
+
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html'                // 생성한 템플릿 파일
@@ -25,4 +35,4 @@ module.exports = {
     ]
 }
 
-// 출처 : https://velog.io/@pop8682/%EB%B2%88%EC%97%AD-React-webpack-%EC%84%A4%EC%A0%95-%EC%B2%98%EC%9D%8C%EB%B6%80%ED%84%B0-%ED%95%B4%EB%B3%B4%EA%B8%B0
+// refernce : https://velog.io/@pop8682/%EB%B2%88%EC%97%AD-React-webpack-%EC%84%A4%EC%A0%95-%EC%B2%98%EC%9D%8C%EB%B6%80%ED%84%B0-%ED%95%B4%EB%B3%B4%EA%B8%B0
