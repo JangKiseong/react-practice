@@ -1,11 +1,17 @@
-import React from 'react'
+import React from 'react';
+import TestAxios from './TestAxios';
 
-export default class App extends React.Component {
+class App extends React.Component {
+
     render(){
+
         return(
             <div>
-                <h1>My React App</h1>
+                <TestAxios />
             </div>
         )
     }
+
 }
+
+export default App;

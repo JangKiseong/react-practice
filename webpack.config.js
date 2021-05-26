@@ -29,13 +29,25 @@ module.exports = {
             }
         ]
     },
-
+    devtool: 'inline-source-map',
     devServer: {                                        // 개발 서버 설정하기
         historyApiFallback: true,
         inline: true,
-        port: 3000,
+        port: 3130,
         hot: true,
         publicPath: '/',
+        contentBase: '/dist',
+        host: 'localhost',
+        open: true,
+        proxy: {
+            '/api': {
+                target: "http://localhost:3131/api",
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': '',
+                }
+            }
+        }
     },
 
     plugins: [                                          // webpack의 기본적인 동작 외 추가적인 기능을 제공하는 속성
