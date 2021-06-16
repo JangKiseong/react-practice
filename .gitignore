@@ -1,1 +1,5 @@
 node_modules
+.well-known
+ssl
+.env
+index_bundle.js

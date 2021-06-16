@@ -4,87 +4,113 @@
  * Module dependencies.
  */
 
- const app = require('../server.js');
- const debug = require('debug')('icmwas:server');
- const http = require('http');
+const httpsApp = require('../server.js');
+const httpApp = require('../server.js');
+const debug = require('debug')('react-practice:server');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
+require('dotenv').config();
+
+const options = {
+  ca: fs.readFileSync('./ssl/ca_bundle.crt'),
+  key: fs.readFileSync('./ssl/private.key'),
+  cert: fs.readFileSync('./ssl/certificate.crt')
+}
  
  /**
   * Normalize a port into a number, string, or false.
   */
  
- const normalizePort = (val) => {
-   const port = parseInt(val, 10);
- 
-   if (isNaN(port)) {
-     // named pipe
-     return val;
-   }
- 
-   if (port >= 0) {
-     // port number
-     return port;
-   }
- 
-   return false;
- }
- 
- /**
-  * Event listener for HTTP server "error" event.
-  */
- 
- const onError = (error) => {
-   if (error.syscall !== 'listen') {
-     throw error;
-   }
- 
-   let bind = typeof port === 'string'
-     ? 'Pipe ' + port
-     : 'Port ' + port;
- 
-   // handle specific listen errors with friendly messages
-   switch (error.code) {
-     case 'EACCES':
-       console.error(bind + ' requires elevated privileges');
-       process.exit(1);
-       break;
-     case 'EADDRINUSE':
-       console.error(bind + ' is already in use');
-       process.exit(1);
-       break;
-     default:
-       throw error;
-   }
- }
- 
- /**
-  * Event listener for HTTP server "listening" event.
-  */
- 
- const onListening = () => {
-    let addr = server.address();
-    let bind = typeof addr === 'string'
-      ? 'pipe ' + addr
-      : 'port ' + addr.port;
-    debug('Listening on ' + bind);
- }
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
 
-  /**
-  * Get port from environment and store in Express.
-  */
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
  
-   const port = normalizePort(process.env.PORT || '3131');
-   app.set('port', port);
-   
-   /**
-    * Create HTTP server.
-    */
-   
-   const server = http.createServer(app);
-   
-   /**
-    * Listen on provided port, on all network interfaces.
-    */
-   
-   server.listen(port, () => console.log(`Server is running on port ${port}`));
-   server.on('error', onError);
-   server.on('listening', onListening);
+/**
+ * Event listener for HTTP server "error" event.
+ */
+ 
+const onError = (error) => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  let bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+ 
+/**
+ * Get port from environment and store in Express.
+ */
+
+const httpsPort = normalizePort(process.env.PORT_HTTPS);
+const httpPort = normalizePort(process.env.PORT_HTTP);
+
+httpsApp.set('port', httpsPort);
+httpApp.set('port', httpPort);
+
+/**
+ * Create HTTPS & HTTP server.
+ */
+
+const httpsServer = https.createServer(options, httpsApp);
+const httpServer = http.createServer(httpApp);
+
+/**
+ * Event listener for HTTPS & HTTP server "listening" event.
+ */
+ 
+const onHttpsListening = () => {
+  let addr = httpsServer.address();
+  let bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
+
+const onHttpListening = () => {
+  let addr = httpServer.address();
+  let bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+httpsServer.listen(httpsPort, () => console.log(`HTTPS Server is running on port ${httpsPort}`));
+httpsServer.on('error', onError);
+httpsServer.on('listening', onHttpsListening);
+
+httpServer.listen(httpPort, () => console.log(`HTTP Server is running on port ${httpPort}`));
+httpServer.on('error', onError);
+httpServer.on('listening', onHttpListening);
