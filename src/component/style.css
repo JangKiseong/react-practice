@@ -8,6 +8,11 @@
     width: 300px;
 }
 
+.form.input, .form.useref{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .img.kakao{
     cursor: pointer;
 }
