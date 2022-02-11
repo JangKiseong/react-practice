@@ -1,22 +1,20 @@
-import React from 'react';
-import TestAxios from './component/TestAxios';
-import InputSample from './component/InputSample';
-import UseRef from './component/UseRef';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import UseReducer from './component/UseReducer';
 import './App.css';
+import Info from './component/Info';
+import UseMemo from './component/UseMemo';
+import UseCallback from './component/UseCallback';
+import UseRefAvg from './component/UseRefAvg';
 
-class App extends React.Component {
+axios.defaults.withCredentials = true;
 
-    render(){
-
-        return(
-            <div className="form app">
-                <TestAxios />
-                <InputSample />
-                <UseRef />
-            </div>
-        )
-    }
-
-}
+const App = () => {
+	return (
+		<div className="form app">
+			<Info />
+		</div>
+	);
+};
 
 export default App;

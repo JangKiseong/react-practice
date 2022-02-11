@@ -9,6 +9,7 @@ const favicon = require('serve-favicon');
 require("dotenv").config();
 
 const indexRouter = require('./routes/index');
+const sensorsRouter = require('./routes/sensors');
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
+app.use('/sensors', sensorsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

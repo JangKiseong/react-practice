@@ -17,7 +17,7 @@ const options = {
   key: fs.readFileSync('./ssl/private.key'),
   cert: fs.readFileSync('./ssl/certificate.crt')
 }
- 
+
  /**
   * Normalize a port into a number, string, or false.
   */
